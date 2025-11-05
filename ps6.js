@@ -2,10 +2,14 @@ let rad = 0;
 let growthRate = 0;
 let shrinkRate = 0;
 let sound1, sound2;
-let circles = []; // Array to store all circles
+let circles = [];
+let osc;
+
 
 function setup(){
-  createCanvas(windowWidth, windowHeight);
+  let cnv = createCanvas(100, 100);
+  cnv.mousePressed(playOscillator);
+  osc = new p5.Oscillator('sine');
 }
 
 function draw(){
@@ -14,18 +18,14 @@ function draw(){
   stroke(255);
   strokeWeight(2);
   
-  // Update radius
   rad += growthRate;
   rad -= shrinkRate;
-  // Constrain radius to be non-negative
   rad = max(rad, 0);
   
-  // If radius hits 0, clear all circles
   if(rad === 0){
     circles = [];
   }
   
-  // Draw all stored circles with the current radius
   for(let c of circles){
     circle(c.x, c.y, rad);
   }
@@ -33,7 +33,6 @@ function draw(){
 }
 
 function mousePressed(){
-  // Add a new circle at mouse position
   circles.push({x: mouseX, y: mouseY});
   
   growthRate = 5;

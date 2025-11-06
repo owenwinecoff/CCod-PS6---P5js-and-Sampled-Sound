@@ -7,9 +7,11 @@ let osc;
 
 
 function setup(){
-  let cnv = createCanvas(100, 100);
-  cnv.mousePressed(playOscillator);
+  createCanvas(windowWidth, windowHeight);
+
   osc = new p5.Oscillator('sine');
+  osc.start();
+  osc.amp(0);
 }
 
 function draw(){
@@ -25,6 +27,13 @@ function draw(){
   if(rad === 0){
     circles = [];
   }
+
+  let freq = map(rad, 0, 300, 400, 150);
+  osc.freq(freq);
+
+  let amp = map(rad, 0, 300, 0, 0.15);
+  amp = constrain(amp, 0, 0.15);
+  osc.amp(amp);
   
   for(let c of circles){
     circle(c.x, c.y, rad);
@@ -34,6 +43,7 @@ function draw(){
 
 function mousePressed(){
   circles.push({x: mouseX, y: mouseY});
+  osc.start();
   
   growthRate = 5;
   shrinkRate = 0;
